@@ -1,0 +1,20 @@
+# bitcoin-realtime-streaming-job 설정
+# FlinkDeployment의 args로 config.yaml 경로를 전달하거나,
+# 개별 값을 환경변수로 오버라이드 가능
+
+kafka:
+  bootstrap_servers: kafka-kafka.kafka.svc.cluster.local:9092
+  topic: upbit-trades
+  group_id: bitcoin-realtime-streaming-job
+  start_offset: latest  # earliest | latest | timestamp
+
+flink:
+  watermark_delay_sec: 5
+  window_size_min: 5
+  window_slide_min: 1
+  checkpoint_interval_ms: 60000
+  top_n: 20
+  parallelism: 1
+
+dedup:
+  ttl_min: 10

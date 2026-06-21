@@ -1,0 +1,33 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: bitcoin-realtime-streaming-job
+  namespace: bitcoin-realtime-streaming
+spec:
+  image: ghcr.io/yoonryeol/bitcoin-realtime-streaming-job:amd64-v7
+  flinkVersion: v1_19
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+    jobmanager.memory.process.size: "768m"
+    taskmanager.memory.process.size: "1400m"
+  serviceAccount: flink
+  podTemplate:
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+  jobManager:
+    resource:
+      memory: "768m"
+      cpu: 0.5
+    replicas: 1
+  taskManager:
+    resource:
+      memory: "1400m"
+      cpu: 0.5
+    replicas: 1
+  job:
+    jarURI: local:///opt/flink/usrlib/bitcoin-realtime-streaming-job.jar
+    entryClass: io.github.yoonryeol.bitcoinrealtime.streaming.UpbitTradeJob
+    args: []
+    parallelism: 1
+    upgradeMode: stateless

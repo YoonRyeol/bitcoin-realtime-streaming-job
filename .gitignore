@@ -1,0 +1,8 @@
+.gradle/
+build/
+.idea/
+*.iml
+.DS_Store
+
+# Build artifacts
+META-INF/
